@@ -12,6 +12,19 @@ export default {
       name: '',
       classNames: [],
       events: [],
+      cards: [
+        {
+          id: 'Card_1',
+          title: 'Card_1',
+          x: 0,
+          y: 0,
+          w: 2,
+          h: 2,
+          static: false,
+          isResizable: true,
+          isDraggable: true,
+        },
+      ],
     },
     related: {
       settings: Settings(LayoutsSettings, BasicSettings),
@@ -34,8 +47,8 @@ export default {
   defaultProps: {
     marginX: 10,
     marginY: 10,
-    rowHeight: 30,
-    autoSize: true,
+    rowHeight: 100,
+    filterMode: true,
   },
 } as T4DComponentConfig<ILayoutsProps>;
 
@@ -44,7 +57,7 @@ export interface ILayoutsProps extends webforms.ComponentProps {
   marginX: number;
   marginY: number;
   rowHeight: number;
-  autoSize?: boolean;
+  filterMode?: boolean;
 }
 
 export interface ICards {

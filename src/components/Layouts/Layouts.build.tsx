@@ -4,8 +4,10 @@ import { FC } from 'react';
 import { WidthProvider, Responsive } from 'react-grid-layout';
 import LayoutElement from './LayoutElement';
 import { ILayoutsProps } from './Layouts.config';
+import LayoutFilter from './LayoutFilter';
 
 const Layouts: FC<ILayoutsProps> = ({
+  filterMode,
   cards = [],
   marginX = 10,
   marginY = 10,
@@ -23,6 +25,7 @@ const Layouts: FC<ILayoutsProps> = ({
 
   return (
     <div ref={connect} style={style} className={cn(className, classNames)}>
+      {filterMode && <LayoutFilter resolver={resolver} data={undefined} />}
       <GridLayout
         className="layout"
         margin={[marginX, marginY]}

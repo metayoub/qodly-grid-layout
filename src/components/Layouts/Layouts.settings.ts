@@ -7,7 +7,7 @@ const commonSettings: TSetting[] = [
     label: 'Panels',
     type: ESetting.GROUP,
     components: [
-      { key: 'autoSize', label: 'Auto Size', type: ESetting.CHECKBOX, defaultValue: true },
+      { key: 'filterMode', label: 'Filter Mode', type: ESetting.CHECKBOX, defaultValue: true },
       { key: 'rowHeight', label: 'Row Height', type: ESetting.NUMBER_FIELD, defaultValue: 30 },
       { key: 'marginX', label: 'Margin X', type: ESetting.NUMBER_FIELD, defaultValue: 10 },
       { key: 'marginY', label: 'Margin Y', type: ESetting.NUMBER_FIELD, defaultValue: 10 },

@@ -1,11 +1,12 @@
 import { Element } from '@ws-ui/craftjs-core';
 import { FC } from 'react';
+import { ICards } from './Layouts.config';
 
 export interface ILayoutFilterProps {
   resolver: any;
-  data: any;
+  data: ICards[];
 }
-const LayoutFilter: FC<ILayoutFilterProps> = ({ resolver }) => {
+const LayoutFilter: FC<ILayoutFilterProps> = ({ resolver, data }) => {
   return (
     <Element
       id="panel-filter"
@@ -16,22 +17,7 @@ const LayoutFilter: FC<ILayoutFilterProps> = ({ resolver }) => {
       drag
       canvas
     >
-      <Element
-        id="panel-filter-button"
-        className="dropDownButton"
-        role="layout-filter-button"
-        is={resolver.Button}
-        deletable={false}
-        canvas
-      />
-      <Element
-        id="panel-filter-input"
-        className="dropDownChild hidden"
-        role="layout-filter-input"
-        is={resolver.StyleBox}
-        deletable={false}
-        canvas={false}
-      />
+      do something to filter the layouts
     </Element>
   );
 };

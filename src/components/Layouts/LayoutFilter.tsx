@@ -10,7 +10,7 @@ interface ILayoutFilterProps {
 }
 
 const LayoutFilter: FC<ILayoutFilterProps> = ({ resolver, data, onFilter }) => {
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [selectedItems, setSelectedItems] = useState<string[]>(data.map((item) => item.title)); // so that the checkboxes are all selected at first
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const inputRefs: { [key: string]: React.RefObject<HTMLInputElement> } = {};
 
@@ -42,7 +42,7 @@ const LayoutFilter: FC<ILayoutFilterProps> = ({ resolver, data, onFilter }) => {
   };
 
   return (
-    <div className={cn('filter-box', 'p-2 flex items-center justify-center gap-4')}>
+    <div className={cn('filter-box', 'p-2 flex justify-end gap-4')}>
       <Element
         id="panel-filter"
         className="h-full w-full flex justify-end"

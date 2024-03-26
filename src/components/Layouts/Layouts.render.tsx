@@ -21,6 +21,7 @@ const Layouts: FC<ILayoutsProps> = ({
   const gridLayoutRef = useRef(null);
   const [value, setValue] = useState(() => cards);
   const [layoutData, setCards] = useState(() => cards);
+  const [count, setExecutionCount] = useState(0);
   const {
     sources: { datasource: ds },
   } = useSources();
@@ -49,6 +50,7 @@ const Layouts: FC<ILayoutsProps> = ({
         }
       });
       setValue(updatedArray);
+      setCards(updatedArray);
     };
 
     listener();
@@ -62,6 +64,9 @@ const Layouts: FC<ILayoutsProps> = ({
   }, [ds]);
 
   useEffect(() => {
+    //getting the storage at the first render
+    const storedLayout = localStorage.getItem('updatedCards');
+    if (storedLayout != null) ds.setValue<Array<any>>(null, JSON.parse(storedLayout));
     // Destroy the GridLayout ref when component unmounts
     return () => {
       gridLayoutRef.current = null;
@@ -69,8 +74,10 @@ const Layouts: FC<ILayoutsProps> = ({
   }, []);
 
   const onLayoutChange = (param: any) => {
-    if (ds) {
-      ds.setValue<Array<any>>(null, param);
+    setExecutionCount((prevCount) => prevCount + 1);
+    //to not set it at the first execution
+    if (count >= 1) {
+      localStorage.setItem('updatedCards', JSON.stringify(param));
     }
   };
 

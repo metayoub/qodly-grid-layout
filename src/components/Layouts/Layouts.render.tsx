@@ -5,8 +5,10 @@ import { useEnhancedEditor, selectResolver } from '@ws-ui/webform-editor';
 import { ILayoutsProps } from './Layouts.config';
 import { WidthProvider, Responsive } from 'react-grid-layout';
 import LayoutElement from './LayoutElement';
+import LayoutFilter from './LayoutFilter';
 
 const Layouts: FC<ILayoutsProps> = ({
+  filterMode,
   cards = [],
   marginX,
   marginY,
@@ -18,6 +20,7 @@ const Layouts: FC<ILayoutsProps> = ({
   const { connect } = useRenderer();
   const gridLayoutRef = useRef(null);
   const [value, setValue] = useState(() => cards);
+  const [layoutData, setCards] = useState(() => cards);
   const {
     sources: { datasource: ds },
   } = useSources();
@@ -71,8 +74,13 @@ const Layouts: FC<ILayoutsProps> = ({
     }
   };
 
+  const filteringCards = (fitleredData: any) => {
+    //used in to filter
+    setCards(fitleredData);
+  };
   return (
     <div ref={connect} style={style} className={cn(className, classNames)}>
+      {filterMode && <LayoutFilter resolver={resolver} data={value} onFilter={filteringCards} />}
       <ResponsiveReactGridLayout
         ref={gridLayoutRef}
         className="layout"
@@ -82,7 +90,7 @@ const Layouts: FC<ILayoutsProps> = ({
         cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
         rowHeight={rowHeight}
       >
-        {value.map((card) => (
+        {layoutData.map((card) => (
           <div key={card.title} data-grid={{ ...card }}>
             <LayoutElement resolver={resolver} id={card.id} />
           </div>

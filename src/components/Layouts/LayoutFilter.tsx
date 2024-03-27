@@ -1,15 +1,13 @@
-import { Element } from '@ws-ui/craftjs-core';
 import { FC, useRef, useState } from 'react';
 import { ICards } from './Layouts.config';
 import cn from 'classnames';
 
 interface ILayoutFilterProps {
-  resolver: any;
   data: ICards[];
-  onFilter: (filteredData: ICards[]) => void;
+  onFilter?: (filteredData: ICards[]) => void;
 }
 
-const LayoutFilter: FC<ILayoutFilterProps> = ({ resolver, data, onFilter }) => {
+const LayoutFilter: FC<ILayoutFilterProps> = ({ data, onFilter = () => {} }) => {
   const [selectedItems, setSelectedItems] = useState<string[]>(data.map((item) => item.title)); // so that the checkboxes are all selected at first
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const inputRefs: { [key: string]: React.RefObject<HTMLInputElement> } = {};
@@ -43,17 +41,6 @@ const LayoutFilter: FC<ILayoutFilterProps> = ({ resolver, data, onFilter }) => {
 
   return (
     <div className={cn('filter-box', 'p-2 flex justify-end gap-4')}>
-      <Element
-        id="panel-filter"
-        className="h-full w-full flex justify-end"
-        role="layout-filter"
-        is={resolver.StyleBox}
-        deletable={false}
-        drag
-        canvas
-      >
-        do something to filter the layouts
-      </Element>
       <div
         className={cn(
           'filter-select-multi',

@@ -9,6 +9,7 @@ import LayoutFilter from './LayoutFilter';
 
 const Layouts: FC<ILayoutsProps> = ({
   filterMode,
+  saveInStorage,
   cards = [],
   marginX,
   marginY,
@@ -21,7 +22,8 @@ const Layouts: FC<ILayoutsProps> = ({
   const gridLayoutRef = useRef(null);
   const [value, setValue] = useState(() => cards);
   const [layoutData, setCards] = useState(() => cards);
-  const [count, setExecutionCount] = useState(0);
+  const [isDragDone, setOnDragStop] = useState<boolean>(false);
+  const [isFiltered, setisFiltered] = useState<boolean>(false);
   const {
     sources: { datasource: ds },
   } = useSources();
@@ -74,20 +76,24 @@ const Layouts: FC<ILayoutsProps> = ({
   }, []);
 
   const onLayoutChange = (param: any) => {
-    setExecutionCount((prevCount) => prevCount + 1);
-    //to not set it at the first execution
-    if (count >= 1) {
+    if (saveInStorage && isDragDone) {
       localStorage.setItem('updatedCards', JSON.stringify(param));
+    } else {
+      if (isFiltered) return; //to not reset the ds by its default value again issue
+      if (ds) {
+        ds.setValue<Array<any>>(null, param);
+      }
     }
   };
 
   const filteringCards = (fitleredData: any) => {
     //used in to filter
     setCards(fitleredData);
+    setisFiltered(true);
   };
   return (
     <div ref={connect} style={style} className={cn(className, classNames)}>
-      {filterMode && <LayoutFilter resolver={resolver} data={value} onFilter={filteringCards} />}
+      {filterMode && <LayoutFilter data={value} onFilter={filteringCards} />}
       <ResponsiveReactGridLayout
         ref={gridLayoutRef}
         className="layout"
@@ -96,6 +102,9 @@ const Layouts: FC<ILayoutsProps> = ({
         breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
         cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
         rowHeight={rowHeight}
+        onDragStop={() => {
+          setOnDragStop(true);
+        }}
       >
         {layoutData.map((card) => (
           <div key={card.title} data-grid={{ ...card }}>

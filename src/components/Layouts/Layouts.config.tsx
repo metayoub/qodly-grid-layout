@@ -49,6 +49,7 @@ export default {
     marginY: 10,
     rowHeight: 100,
     filterMode: true,
+    saveInStorage: true,
   },
 } as T4DComponentConfig<ILayoutsProps>;
 
@@ -58,6 +59,7 @@ export interface ILayoutsProps extends webforms.ComponentProps {
   marginY: number;
   rowHeight: number;
   filterMode?: boolean;
+  saveInStorage?: boolean;
 }
 
 export interface ICards {

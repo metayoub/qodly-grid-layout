@@ -25,7 +25,7 @@ const Layouts: FC<ILayoutsProps> = ({
 
   return (
     <div ref={connect} style={style} className={cn(className, classNames)}>
-      {filterMode && <LayoutFilter resolver={resolver} data={[]} onFilter={() => {}} />}
+      {filterMode && <LayoutFilter data={[]} />}
       <GridLayout
         className="layout"
         margin={[marginX, marginY]}

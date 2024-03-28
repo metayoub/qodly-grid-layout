@@ -14,6 +14,12 @@ const commonSettings: TSetting[] = [
         type: ESetting.CHECKBOX,
         defaultValue: false,
       },
+      {
+        key: 'preventCollision',
+        label: 'Prevent Collision',
+        type: ESetting.CHECKBOX,
+        defaultValue: true,
+      },
       { key: 'rowHeight', label: 'Row Height', type: ESetting.NUMBER_FIELD, defaultValue: 30 },
       { key: 'marginX', label: 'Margin X', type: ESetting.NUMBER_FIELD, defaultValue: 10 },
       { key: 'marginY', label: 'Margin Y', type: ESetting.NUMBER_FIELD, defaultValue: 10 },

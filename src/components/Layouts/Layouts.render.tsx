@@ -14,6 +14,7 @@ const Layouts: FC<ILayoutsProps> = ({
   marginX,
   marginY,
   rowHeight = 30,
+  preventCollision = true,
   style,
   className,
   classNames = [],
@@ -111,7 +112,9 @@ const Layouts: FC<ILayoutsProps> = ({
 
   return (
     <div ref={connect} style={style} className={cn(className, classNames)}>
-      {filterMode && <LayoutFilter data={value} onFilter={filteringCards} />}
+      {filterMode && (
+        <LayoutFilter cards={value} selectedCards={layoutData} onFilter={filteringCards} />
+      )}
       <ResponsiveReactGridLayout
         ref={gridLayoutRef}
         className="layout"
@@ -120,6 +123,7 @@ const Layouts: FC<ILayoutsProps> = ({
         breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
         cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
         rowHeight={rowHeight}
+        preventCollision={preventCollision}
         onDragStop={() => {
           setIsDragDone(true);
         }}

@@ -3,16 +3,23 @@ import { ICards } from './Layouts.config';
 import cn from 'classnames';
 
 interface ILayoutFilterProps {
-  data: ICards[];
+  cards: ICards[];
+  selectedCards?: ICards[];
   onFilter?: (filteredData: ICards[]) => void;
 }
 
-const LayoutFilter: FC<ILayoutFilterProps> = ({ data, onFilter = () => {} }) => {
-  const [selectedItems, setSelectedItems] = useState<string[]>(data.map((item) => item.title)); // so that the checkboxes are all selected at first
+const LayoutFilter: FC<ILayoutFilterProps> = ({
+  cards,
+  selectedCards = [],
+  onFilter = () => {},
+}) => {
+  const [selectedItems, setSelectedItems] = useState<string[]>(
+    selectedCards.map((item) => item.title),
+  ); // so that the checkboxes are all selected at first
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const inputRefs: { [key: string]: React.RefObject<HTMLInputElement> } = {};
 
-  data.forEach((item) => {
+  cards.forEach((item) => {
     //used to set the checkbox with refs equal to the item.title value
     inputRefs[item.title] = useRef<HTMLInputElement>(null);
   });
@@ -26,7 +33,7 @@ const LayoutFilter: FC<ILayoutFilterProps> = ({ data, onFilter = () => {} }) => 
     }
     setSelectedItems(updatedSelection);
 
-    const filteredData = data.filter((item) => updatedSelection.includes(item.title));
+    const filteredData = cards.filter((item) => updatedSelection.includes(item.title));
     onFilter(filteredData);
   };
 
@@ -51,7 +58,7 @@ const LayoutFilter: FC<ILayoutFilterProps> = ({ data, onFilter = () => {} }) => 
           Filter by cards:
         </div>
       </div>
-      {data.length > 0 && (
+      {cards.length > 0 && (
         <div
           className={cn(
             'filter-check',
@@ -61,7 +68,7 @@ const LayoutFilter: FC<ILayoutFilterProps> = ({ data, onFilter = () => {} }) => 
           onMouseLeave={() => handleMouseLeave()}
         >
           <div className="relative">
-            {data.map((item) => (
+            {cards.map((item) => (
               <div
                 key={item.title}
                 className={cn('filter-select-item', 'flex p-2 justify-between')}

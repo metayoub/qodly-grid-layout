@@ -50,6 +50,7 @@ export default {
     rowHeight: 100,
     filterMode: true,
     saveInStorage: false,
+    preventCollision: true,
   },
 } as T4DComponentConfig<ILayoutsProps>;
 
@@ -58,6 +59,7 @@ export interface ILayoutsProps extends webforms.ComponentProps {
   marginX: number;
   marginY: number;
   rowHeight: number;
+  preventCollision: boolean;
   filterMode?: boolean;
   saveInStorage?: boolean;
 }

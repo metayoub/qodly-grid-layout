@@ -24,7 +24,6 @@ const Layouts: FC<ILayoutsProps> = ({
   const [value, setValue] = useState(cards.map((card) => ({ ...card, i: card.title })));
   const [layoutData, setLayoutData] = useState<ICards[]>([]);
   const [isDragDone, setIsDragDone] = useState(false);
-  const [isFiltered, setisFiltered] = useState(false);
   const [isFirstLoad, setIsFirstLoad] = useState(true);
   const {
     sources: { datasource: ds },
@@ -38,16 +37,26 @@ const Layouts: FC<ILayoutsProps> = ({
     if (!ds) return;
     const listener = async (/* event */) => {
       if (!ds) return;
-      // to be tested because i changed the cards
+      // If we have a datasource, then local Storage should be disabled
       const updatedCards = (await ds.getValue()) || [];
       const updatedLayout = value.map((oldCard) => {
-        const matchingNewCard = updatedCards.find(
-          (newCard: { i: string }) => newCard.i === oldCard.title,
-        );
+        const matchingNewCard = updatedCards.find((newCard: any) => newCard.i === oldCard.i);
         return matchingNewCard ? { ...oldCard, ...matchingNewCard } : oldCard;
       });
+
+      const filteredValue =
+        updatedCards.length > 0
+          ? value
+              .filter((item) => updatedCards.some((newCard: any) => newCard.i === item.i))
+              .map((oldCard) => {
+                const matchingNewCard = updatedCards.find(
+                  (newCard: any) => newCard.i === oldCard.i,
+                );
+                return matchingNewCard ? { ...oldCard, ...matchingNewCard } : oldCard;
+              })
+          : updatedLayout;
       setValue(updatedLayout);
-      setLayoutData(updatedLayout);
+      setLayoutData(filteredValue);
     };
 
     listener();
@@ -62,12 +71,9 @@ const Layouts: FC<ILayoutsProps> = ({
 
   useEffect(() => {
     const storedLayout = localStorage.getItem('updatedCards');
-
-    if (saveInStorage && storedLayout) {
+    if (!ds && saveInStorage && storedLayout) {
       const parsedLayout = JSON.parse(storedLayout);
-      if (ds) {
-        ds.setValue<Array<any>>(null, parsedLayout);
-      } else if (parsedLayout.length > 0) {
+      if (parsedLayout.length > 0) {
         const filteredValue = value
           .filter((item) => parsedLayout.some((newCard: any) => newCard.i === item.i))
           .map((oldCard) => {
@@ -94,20 +100,20 @@ const Layouts: FC<ILayoutsProps> = ({
       return;
     }
 
-    if (saveInStorage && isDragDone) {
+    if (saveInStorage && !ds && isDragDone) {
       localStorage.setItem('updatedCards', JSON.stringify(newLayout));
-    } else if (!isFiltered && ds) {
+    }
+    if (ds && !isFirstLoad) {
       ds.setValue(null, newLayout);
     }
   };
 
   const filteringCards = (fitleredData: any) => {
     //used in to filter
-    if (saveInStorage) {
+    if (saveInStorage && !ds) {
       localStorage.setItem('updatedCards', JSON.stringify(fitleredData));
     }
     setLayoutData(fitleredData);
-    setisFiltered(true);
   };
 
   return (

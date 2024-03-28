@@ -15,6 +15,7 @@ export default {
       cards: [
         {
           id: 'Card_1',
+          i: 'Card_1',
           title: 'Card_1',
           x: 0,
           y: 0,
@@ -66,6 +67,7 @@ export interface ILayoutsProps extends webforms.ComponentProps {
 
 export interface ICards {
   id: string;
+  i: string;
   title: string;
   x: number;
   y: number;

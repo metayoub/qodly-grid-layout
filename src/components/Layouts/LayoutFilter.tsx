@@ -13,30 +13,23 @@ const LayoutFilter: FC<ILayoutFilterProps> = ({
   selectedCards = [],
   onFilter = () => {},
 }) => {
-  const [selectedItems, setSelectedItems] = useState<string[]>(
-    selectedCards.map((item) => item.title),
-  ); // so that the checkboxes are all selected at first
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const inputRefs: { [key: string]: React.RefObject<HTMLInputElement> } = {};
 
   cards.forEach((item) => {
-    //used to set the checkbox with refs equal to the item.title value
-    inputRefs[item.title] = useRef<HTMLInputElement>(null);
+    //used to set the checkbox with refs equal to the item.i value
+    inputRefs[item.i] = useRef<HTMLInputElement>(null);
   });
 
   const toggleCheckbox = (value: string) => {
-    const updatedSelection = selectedItems.slice();
-    if (updatedSelection.includes(value)) {
-      updatedSelection.splice(updatedSelection.indexOf(value), 1);
-    } else {
-      updatedSelection.push(value);
-    }
-    setSelectedItems(updatedSelection);
+    const selectedItems = selectedCards.map((item) => item.i);
+    const updatedSelection = selectedItems.includes(value)
+      ? selectedItems.filter((item) => item !== value)
+      : [...selectedItems, value];
 
-    const filteredData = cards.filter((item) => updatedSelection.includes(item.title));
+    const filteredData = cards.filter((item) => updatedSelection.includes(item.i));
     onFilter(filteredData);
   };
-
   //used to manage the checkbox visibility
   const handleClick = () => {
     setIsVisible(true);
@@ -69,17 +62,14 @@ const LayoutFilter: FC<ILayoutFilterProps> = ({
         >
           <div className="relative">
             {cards.map((item) => (
-              <div
-                key={item.title}
-                className={cn('filter-select-item', 'flex p-2 justify-between')}
-              >
-                <label>{item.title}</label>
+              <div key={item.i} className={cn('filter-select-item', 'flex p-2 justify-between')}>
+                <label>{item.i}</label>
                 <input
                   className={cn('filter-select-checkbox', 'cursor-pointer')}
-                  ref={inputRefs[item.title]}
+                  ref={inputRefs[item.i]}
                   type="checkbox"
-                  checked={selectedItems.includes(item.title)}
-                  onChange={() => toggleCheckbox(item.title)}
+                  checked={!!selectedCards.find((elemnt) => elemnt.i === item.i)}
+                  onChange={() => toggleCheckbox(item.i)}
                 />
               </div>
             ))}

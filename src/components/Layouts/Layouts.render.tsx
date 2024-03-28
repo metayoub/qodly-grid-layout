@@ -2,7 +2,7 @@ import { useRenderer, useSources } from '@ws-ui/webform-editor';
 import cn from 'classnames';
 import { FC, useEffect, useRef, useState, useMemo } from 'react';
 import { useEnhancedEditor, selectResolver } from '@ws-ui/webform-editor';
-import { ILayoutsProps } from './Layouts.config';
+import { ICards, ILayoutsProps } from './Layouts.config';
 import { WidthProvider, Responsive } from 'react-grid-layout';
 import LayoutElement from './LayoutElement';
 import LayoutFilter from './LayoutFilter';
@@ -22,7 +22,7 @@ const Layouts: FC<ILayoutsProps> = ({
   const { connect } = useRenderer();
   const gridLayoutRef = useRef(null);
   const [value, setValue] = useState(cards.map((card) => ({ ...card, i: card.title })));
-  const [layoutData, setLayoutData] = useState(cards.map((card) => ({ ...card, i: card.title })));
+  const [layoutData, setLayoutData] = useState<ICards[]>([]);
   const [isDragDone, setIsDragDone] = useState(false);
   const [isFiltered, setisFiltered] = useState(false);
   const [isFirstLoad, setIsFirstLoad] = useState(true);

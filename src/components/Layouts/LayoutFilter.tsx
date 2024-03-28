@@ -40,36 +40,45 @@ const LayoutFilter: FC<ILayoutFilterProps> = ({ data, onFilter = () => {} }) => 
   };
 
   return (
-    <div className={cn('filter-box', 'p-2 flex justify-end gap-4')}>
+    <div className={cn('filter-box', 'p-2 flex flex-col gap-2 items-end relative')}>
       <div
         className={cn(
           'filter-select-multi',
-          'p-2 h-fit w-1/4 border-2 border-gray-300 cursor-pointer rounded-md flex flex-col gap-2',
+          'p-2 h-fit w-1/4 border-2 border-gray-300 cursor-pointer rounded-md gap-2',
         )}
-        onClick={handleClick}
       >
-        <div className={cn('filter-text', 'text-gray-500')}>Filter by cards:</div>
-        <div
-          className={cn('filter-check', 'flex flex-col', { hidden: !isVisible })}
-          onMouseLeave={handleMouseLeave}
-        >
-          {data.map((item) => (
-            <div
-              key={item.title}
-              className={cn('filter-select-item', 'flex p-2 justify-between bg-white')}
-            >
-              <label>{item.title}</label>
-              <input
-                className={cn('filter-select-checkbox', 'cursor-pointer')}
-                ref={inputRefs[item.title]}
-                type="checkbox"
-                checked={selectedItems.includes(item.title)}
-                onChange={() => toggleCheckbox(item.title)}
-              />
-            </div>
-          ))}
+        <div className={cn('filter-text', 'text-gray-500')} onClick={handleClick}>
+          Filter by cards:
         </div>
       </div>
+      {data.length > 0 && (
+        <div
+          className={cn(
+            'filter-check',
+            'bg-white flex flex-col p-2 h-fit w-1/4 border-2 border-gray-300 cursor-pointer rounded-md',
+            { hidden: !isVisible },
+          )}
+          onMouseLeave={() => handleMouseLeave()}
+        >
+          <div className="relative">
+            {data.map((item) => (
+              <div
+                key={item.title}
+                className={cn('filter-select-item', 'flex p-2 justify-between')}
+              >
+                <label>{item.title}</label>
+                <input
+                  className={cn('filter-select-checkbox', 'cursor-pointer')}
+                  ref={inputRefs[item.title]}
+                  type="checkbox"
+                  checked={selectedItems.includes(item.title)}
+                  onChange={() => toggleCheckbox(item.title)}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

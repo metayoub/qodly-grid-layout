@@ -49,7 +49,7 @@ export default {
     marginY: 10,
     rowHeight: 100,
     filterMode: true,
-    saveInStorage: true,
+    saveInStorage: false,
   },
 } as T4DComponentConfig<ILayoutsProps>;
 

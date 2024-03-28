@@ -8,7 +8,12 @@ const commonSettings: TSetting[] = [
     type: ESetting.GROUP,
     components: [
       { key: 'filterMode', label: 'Filter Mode', type: ESetting.CHECKBOX, defaultValue: true },
-      { key: 'saveInStorage', label: 'Save in local storage', type: ESetting.CHECKBOX, defaultValue: true },
+      {
+        key: 'saveInStorage',
+        label: 'Save in local storage',
+        type: ESetting.CHECKBOX,
+        defaultValue: false,
+      },
       { key: 'rowHeight', label: 'Row Height', type: ESetting.NUMBER_FIELD, defaultValue: 30 },
       { key: 'marginX', label: 'Margin X', type: ESetting.NUMBER_FIELD, defaultValue: 10 },
       { key: 'marginY', label: 'Margin Y', type: ESetting.NUMBER_FIELD, defaultValue: 10 },

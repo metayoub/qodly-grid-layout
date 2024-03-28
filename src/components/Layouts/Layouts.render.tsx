@@ -20,10 +20,11 @@ const Layouts: FC<ILayoutsProps> = ({
 }) => {
   const { connect } = useRenderer();
   const gridLayoutRef = useRef(null);
-  const [value, setValue] = useState(() => cards);
-  const [layoutData, setCards] = useState(() => cards);
-  const [isDragDone, setOnDragStop] = useState<boolean>(false);
-  const [isFiltered, setisFiltered] = useState<boolean>(false);
+  const [value, setValue] = useState(cards.map((card) => ({ ...card, i: card.title })));
+  const [layoutData, setLayoutData] = useState(cards.map((card) => ({ ...card, i: card.title })));
+  const [isDragDone, setIsDragDone] = useState(false);
+  const [isFiltered, setisFiltered] = useState(false);
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
   const {
     sources: { datasource: ds },
   } = useSources();
@@ -35,24 +36,17 @@ const Layouts: FC<ILayoutsProps> = ({
   useEffect(() => {
     if (!ds) return;
     const listener = async (/* event */) => {
-      const v = await ds.getValue<Array<any>>();
-      const updatedArray = value.map((oldCard) => {
-        const matchingNewCard = v.find((newCard) => newCard.i === oldCard.title);
-        if (matchingNewCard) {
-          return {
-            ...oldCard,
-            i: oldCard.title,
-            x: matchingNewCard.x,
-            y: matchingNewCard.y,
-            h: matchingNewCard.h,
-            w: matchingNewCard.w,
-          };
-        } else {
-          return oldCard; // If no matching new card found, keep the old card unchanged
-        }
+      if (!ds) return;
+      // to be tested because i changed the cards
+      const updatedCards = (await ds.getValue()) || [];
+      const updatedLayout = value.map((oldCard) => {
+        const matchingNewCard = updatedCards.find(
+          (newCard: { i: string }) => newCard.i === oldCard.title,
+        );
+        return matchingNewCard ? { ...oldCard, ...matchingNewCard } : oldCard;
       });
-      setValue(updatedArray);
-      setCards(updatedArray);
+      setValue(updatedLayout);
+      setLayoutData(updatedLayout);
     };
 
     listener();
@@ -66,29 +60,52 @@ const Layouts: FC<ILayoutsProps> = ({
   }, [ds]);
 
   useEffect(() => {
-    //getting the storage at the first render
     const storedLayout = localStorage.getItem('updatedCards');
-    if (storedLayout != null) ds.setValue<Array<any>>(null, JSON.parse(storedLayout));
-    // Destroy the GridLayout ref when component unmounts
+
+    if (saveInStorage && storedLayout) {
+      const parsedLayout = JSON.parse(storedLayout);
+      if (ds) {
+        ds.setValue<Array<any>>(null, parsedLayout);
+      } else if (parsedLayout.length > 0) {
+        const filteredValue = value
+          .filter((item) => parsedLayout.some((newCard: any) => newCard.i === item.i))
+          .map((oldCard) => {
+            const matchingNewCard = parsedLayout.find((newCard: any) => newCard.i === oldCard.i);
+            return matchingNewCard ? { ...oldCard, ...matchingNewCard } : oldCard;
+          });
+        const updatedLayout = value.map((oldCard) => {
+          const matchingNewCard = parsedLayout.find((newCard: any) => newCard.i === oldCard.i);
+          return matchingNewCard ? { ...oldCard, ...matchingNewCard } : oldCard;
+        });
+        setValue(updatedLayout);
+        setLayoutData(filteredValue);
+      }
+    }
+
     return () => {
       gridLayoutRef.current = null;
     };
   }, []);
 
-  const onLayoutChange = (param: any) => {
+  const onLayoutChange = (newLayout: any) => {
+    if (isFirstLoad) {
+      setIsFirstLoad(false);
+      return;
+    }
+
     if (saveInStorage && isDragDone) {
-      localStorage.setItem('updatedCards', JSON.stringify(param));
-    } else {
-      if (isFiltered) return; //to not reset the ds by its default value again issue
-      if (ds) {
-        ds.setValue<Array<any>>(null, param);
-      }
+      localStorage.setItem('updatedCards', JSON.stringify(newLayout));
+    } else if (!isFiltered && ds) {
+      ds.setValue(null, newLayout);
     }
   };
 
   const filteringCards = (fitleredData: any) => {
     //used in to filter
-    setCards(fitleredData);
+    if (saveInStorage) {
+      localStorage.setItem('updatedCards', JSON.stringify(fitleredData));
+    }
+    setLayoutData(fitleredData);
     setisFiltered(true);
   };
   return (
@@ -103,7 +120,7 @@ const Layouts: FC<ILayoutsProps> = ({
         cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
         rowHeight={rowHeight}
         onDragStop={() => {
-          setOnDragStop(true);
+          setIsDragDone(true);
         }}
       >
         {layoutData.map((card) => (

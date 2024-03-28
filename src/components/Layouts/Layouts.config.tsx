@@ -69,7 +69,7 @@ export interface ICards {
   y: number;
   w: number;
   h: number;
-  static?: boolean;
+  static: boolean;
   isResizable?: boolean;
   isDraggable?: boolean;
 }

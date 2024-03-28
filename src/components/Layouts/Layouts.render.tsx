@@ -108,6 +108,7 @@ const Layouts: FC<ILayoutsProps> = ({
     setLayoutData(fitleredData);
     setisFiltered(true);
   };
+
   return (
     <div ref={connect} style={style} className={cn(className, classNames)}>
       {filterMode && <LayoutFilter data={value} onFilter={filteringCards} />}
@@ -124,7 +125,14 @@ const Layouts: FC<ILayoutsProps> = ({
         }}
       >
         {layoutData.map((card) => (
-          <div key={card.title} data-grid={{ ...card }}>
+          <div
+            key={card.title}
+            data-grid={{
+              ...card,
+              isDraggable: !card.static || card.isDraggable,
+              isResizable: !card.static || card.isResizable,
+            }}
+          >
             <LayoutElement resolver={resolver} id={card.id} />
           </div>
         ))}

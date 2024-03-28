@@ -40,11 +40,11 @@ const LayoutFilter: FC<ILayoutFilterProps> = ({
   };
 
   return (
-    <div className={cn('filter-box', 'p-2 flex flex-col gap-2 items-end relative')}>
+    <div className={cn('filter-box', 'p-2 flex flex-col items-end relative')}>
       <div
         className={cn(
           'filter-select-multi',
-          'p-2 h-fit w-1/4 border-2 border-gray-300 cursor-pointer rounded-md gap-2',
+          'p-2 h-fit w-36 border-2 border-gray-300 cursor-pointer rounded-md',
         )}
       >
         <div className={cn('filter-text', 'text-gray-500')} onClick={handleClick}>
@@ -55,7 +55,7 @@ const LayoutFilter: FC<ILayoutFilterProps> = ({
         <div
           className={cn(
             'filter-check',
-            'bg-white flex flex-col p-2 h-fit w-1/4 border-2 border-gray-300 cursor-pointer rounded-md',
+            'absolute top-14 z-10 bg-white flex flex-col p-2 h-fit w-36 border-2 border-gray-300 rounded-md',
             { hidden: !isVisible },
           )}
           onMouseLeave={() => handleMouseLeave()}

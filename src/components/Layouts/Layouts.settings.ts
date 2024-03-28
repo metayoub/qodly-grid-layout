@@ -8,6 +8,18 @@ const commonSettings: TSetting[] = [
     type: ESetting.GROUP,
     components: [
       { key: 'filterMode', label: 'Filter Mode', type: ESetting.CHECKBOX, defaultValue: true },
+      {
+        key: 'saveInStorage',
+        label: 'Save in local storage',
+        type: ESetting.CHECKBOX,
+        defaultValue: false,
+      },
+      {
+        key: 'preventCollision',
+        label: 'Prevent Collision',
+        type: ESetting.CHECKBOX,
+        defaultValue: true,
+      },
       { key: 'rowHeight', label: 'Row Height', type: ESetting.NUMBER_FIELD, defaultValue: 30 },
       { key: 'marginX', label: 'Margin X', type: ESetting.NUMBER_FIELD, defaultValue: 10 },
       { key: 'marginY', label: 'Margin Y', type: ESetting.NUMBER_FIELD, defaultValue: 10 },
@@ -63,12 +75,13 @@ const Settings: TSetting[] = [
     type: ESetting.GROUP,
     components: commonSettings,
   },
-  ...DEFAULT_SETTINGS,
+  ...load(DEFAULT_SETTINGS).filter('display'),
 ];
 
+console.log('DEFAULT_SETTINGS', DEFAULT_SETTINGS);
 export const BasicSettings: TSetting[] = [
   ...commonSettings,
-  ...load(BASIC_SETTINGS).filter('style.overflow'),
+  ...load(BASIC_SETTINGS).filter('style.overflow', 'display'),
 ];
 
 export default Settings;

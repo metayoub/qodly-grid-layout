@@ -15,6 +15,7 @@ export default {
       cards: [
         {
           id: 'Card_1',
+          i: 'Card_1',
           title: 'Card_1',
           x: 0,
           y: 0,
@@ -49,6 +50,8 @@ export default {
     marginY: 10,
     rowHeight: 100,
     filterMode: true,
+    saveInStorage: false,
+    preventCollision: true,
   },
 } as T4DComponentConfig<ILayoutsProps>;
 
@@ -57,17 +60,20 @@ export interface ILayoutsProps extends webforms.ComponentProps {
   marginX: number;
   marginY: number;
   rowHeight: number;
+  preventCollision: boolean;
   filterMode?: boolean;
+  saveInStorage?: boolean;
 }
 
 export interface ICards {
   id: string;
+  i: string;
   title: string;
   x: number;
   y: number;
   w: number;
   h: number;
-  static?: boolean;
+  static: boolean;
   isResizable?: boolean;
   isDraggable?: boolean;
 }

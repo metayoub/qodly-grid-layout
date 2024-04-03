@@ -8,21 +8,21 @@ Make your dashboard more powerfull with qodly-grid-layout build by the react-gri
 
 ### Properties
 
-| Name                  | Type    | Default                               | Description                                                                                                                                                                     |
-| --------------------- | ------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
-| Filter Mode           | boolean | True                                  | If set to true, you'll have the ability to filter and display the cards you want                                                                                                |
-| Save in local storage | boolean | False                                 | If set to true, instead of storing your layout in a datasoucre, it will be saved in the local storage, and will be displayed on the next render of your component               |     |
-| Prevent collision     | boolean | True                                  | If set to true, dragging the cards defined inside the grid-layout will be disabled                                                                                              |
-| Row height            | number  | 100                                   | This value defines the height of your grid                                                                                                                                      |
-| Margin X              | number  | 10                                    | This is the right margin between the cards and the parent                                                                                                                       |
-| Margin Y              | number  | 10                                    | This is the top margin between the cards and the parent                                                                                                                         |
-| Cards                 | array   | One card by default with title Card_1 | This is the area where you will define how many cards will be displayed within the grid. You will have to give a unique name to each card's title in order for it to be visible |
+| Name | Type | Default |Description|
+| ---- | ---- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |  
+| Filter Mode | boolean | True | If set to true, you'll have the ability to filter and display the cards you want |
+| Save in local storage | boolean | False | If set to true, instead of storing your layout in a datasoucre, it will be saved in the local storage, and will be displayed on the next render of your component | |
+| Prevent collision | boolean | True | If set to true, dragging the cards defined inside the grid-layout will be disabled |
+| Row height | number | 100 | This value defines the height of your grid |
+| Margin X | number | 10 | This is the right margin between the cards and the parent |
+| Margin Y | number | 10 | This is the top margin between the cards and the parent |
+| Cards | array | One card by default with title Card_1 | This is the area where you will define how many cards will be displayed within the grid. You will have to give a unique name to each card's title in order for it to be visible |
 
 ### Datasource
 
-| Name       | Type  | Required | Description                                                                                                                                                                                                |
-| ---------- | ----- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| datasource | Array | Depends  | Will contain the layout's array. If you use set the "save in local storage" property to true, you do not have to bind the layout with any datasource, else if set to false, you must bind it with a datasource of type array|
+| Name       | Type  | Required | Description |
+| ---------- | ----- | -------- | -------------------------------------------------------------------------------------------------------------------------- |
+| datasource | Array | Depends | Will contain the layout's array. If you use set the "save in local storage" property to true, you do not have to bind the layout with any datasource, else if set to false, you must bind it with a datasource of type array|
 
 ### Custom css
 

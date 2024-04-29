@@ -6,6 +6,10 @@ Make your dashboard more powerfull with qodly-grid-layout build by the react-gri
 
 ![Grid Layout](public/grid-layout-min.gif)
 
+## Warning
+
+The build is not fully responsive but the render is responsive.
+
 ## Properties
 
 | Name                | Attribute          | Type    | Required | Default                               | Description                                                                                                                                                                     |

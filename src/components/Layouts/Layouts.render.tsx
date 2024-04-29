@@ -94,13 +94,20 @@ const Layouts: FC<ILayoutsProps> = ({
     };
   }, []);
 
+  useEffect(() => {
+    // not filtred & not saved anywhere
+    if ((!ds && !saveInStorage) || !filterMode) {
+      setLayoutData(value);
+    }
+  }, []);
+
   const onLayoutChange = (newLayout: any) => {
     if (isFirstLoad) {
       setIsFirstLoad(false);
       return;
     }
 
-    if (saveInStorage && !ds && isDragDone) {
+    if (saveInStorage && filterMode && !ds && isDragDone) {
       localStorage.setItem('updatedCards', JSON.stringify(newLayout));
     }
     if (ds && !isFirstLoad) {
@@ -110,7 +117,7 @@ const Layouts: FC<ILayoutsProps> = ({
 
   const filteringCards = (fitleredData: any) => {
     //used in to filter
-    if (saveInStorage && !ds) {
+    if (saveInStorage && filterMode && !ds) {
       localStorage.setItem('updatedCards', JSON.stringify(fitleredData));
     }
     setLayoutData(fitleredData);

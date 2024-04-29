@@ -1,7 +1,7 @@
 import { useEnhancedNode, useEnhancedEditor, selectResolver } from '@ws-ui/webform-editor';
 import cn from 'classnames';
-import { FC } from 'react';
-import { WidthProvider, Responsive } from 'react-grid-layout';
+import { FC, useState, useEffect } from 'react';
+import GridLayout from 'react-grid-layout';
 import LayoutElement from './LayoutElement';
 import { ILayoutsProps } from './Layouts.config';
 import LayoutFilter from './LayoutFilter';
@@ -20,8 +20,24 @@ const Layouts: FC<ILayoutsProps> = ({
     connectors: { connect },
   } = useEnhancedNode();
   const { resolver } = useEnhancedEditor(selectResolver);
+  const [numCols, setNumCols] = useState(12);
+  const [gridWidth, setGridWidth] = useState(1200);
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1200) {
+        setNumCols(12);
+        setGridWidth(1200);
+      } else {
+        setNumCols(10);
+        setGridWidth(996);
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
 
-  const GridLayout = WidthProvider(Responsive);
+    // Cleanup function to remove event listener
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <div ref={connect} style={style} className={cn(className, classNames)}>
@@ -29,9 +45,10 @@ const Layouts: FC<ILayoutsProps> = ({
       <GridLayout
         className="layout"
         margin={[marginX, marginY]}
-        breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
-        cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
+        layout={cards}
+        cols={numCols}
         rowHeight={rowHeight}
+        width={gridWidth}
       >
         {cards.map((card) => (
           <div key={card.id} data-grid={{ ...card, isDraggable: false, isResizable: false }}>

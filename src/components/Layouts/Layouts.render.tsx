@@ -1,4 +1,4 @@
-import { useRenderer, useSources } from '@ws-ui/webform-editor';
+import { useRenderer, useSources, useEnhancedNode } from '@ws-ui/webform-editor';
 import cn from 'classnames';
 import { FC, useEffect, useRef, useState, useMemo } from 'react';
 import { useEnhancedEditor, selectResolver } from '@ws-ui/webform-editor';
@@ -20,6 +20,7 @@ const Layouts: FC<ILayoutsProps> = ({
   classNames = [],
 }) => {
   const { connect } = useRenderer();
+  const { id } = useEnhancedNode();
   const gridLayoutRef = useRef(null);
   const [value, setValue] = useState(cards.map((card) => ({ ...card, i: card.title })));
   const [layoutData, setLayoutData] = useState<ICards[]>([]);
@@ -70,7 +71,7 @@ const Layouts: FC<ILayoutsProps> = ({
   }, [ds]);
 
   useEffect(() => {
-    const storedLayout = localStorage.getItem('updatedCards');
+    const storedLayout = localStorage.getItem(`updatedCards_${id}`);
     if (!ds && saveInStorage && storedLayout) {
       const parsedLayout = JSON.parse(storedLayout);
       if (parsedLayout.length > 0) {
@@ -108,7 +109,7 @@ const Layouts: FC<ILayoutsProps> = ({
     }
 
     if (saveInStorage && filterMode && !ds && isDragDone) {
-      localStorage.setItem('updatedCards', JSON.stringify(newLayout));
+      localStorage.setItem(`updatedCards_${id}`, JSON.stringify(newLayout));
     }
     if (ds && !isFirstLoad) {
       ds.setValue(null, newLayout);
@@ -118,7 +119,7 @@ const Layouts: FC<ILayoutsProps> = ({
   const filteringCards = (fitleredData: any) => {
     //used in to filter
     if (saveInStorage && filterMode && !ds) {
-      localStorage.setItem('updatedCards', JSON.stringify(fitleredData));
+      localStorage.setItem(`updatedCards_${id}`, JSON.stringify(fitleredData));
     }
     setLayoutData(fitleredData);
   };

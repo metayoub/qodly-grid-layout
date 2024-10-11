@@ -141,6 +141,7 @@ const Layouts: FC<ILayoutsProps> = ({
         onDragStop={() => {
           setIsDragDone(true);
         }}
+        draggableCancel="[class^='fd-']:not(.fd-stylebox)"
       >
         {layoutData.map((card) => (
           <div
